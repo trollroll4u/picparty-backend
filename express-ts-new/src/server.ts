@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 import UserRoute from './routes/User-route'
-import swaggerDocs from './library/Swagger';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger.json';
 
 const router = express();
 
@@ -36,6 +37,9 @@ const StartServer = () => {
     /** Routes */
     router.use('/users', UserRoute);
 
+    /** Swagger */
+    router.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'world' }));
 
@@ -51,8 +55,6 @@ const StartServer = () => {
     });
 
     http.createServer(router).listen(config.server.port, () => {
-        Logging.info(`Server is running on port ${config.server.port}`)
-
-        swaggerDocs(router, config.server.port)    
+        Logging.info(`Server is running on port ${config.server.port}`) 
     });
 };
