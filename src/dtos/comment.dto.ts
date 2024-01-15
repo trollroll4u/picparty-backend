@@ -6,6 +6,20 @@ import { Picture } from 'src/entities/picture.entity';
 
 export class CreateCommentDto {
 
+    @ApiProperty({
+      example: 'user_id',
+      description: 'The user ID creating the picture',
+      required: true
+    })
+    readonly userId: string;
+
+    @ApiProperty({
+      example: 'picture_id',
+      description: 'The picture ID creating the comment',
+      required: true
+    })
+    readonly pictureId: string;
+
     @ApiProperty({ 
         example: 'Look at Ohad',
         description: 'The comment text',

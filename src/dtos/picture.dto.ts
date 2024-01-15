@@ -7,6 +7,20 @@ import { CreateCommentDto, UpdateCommentDto } from './comment.dto';
 
 export class CreatePictureDto {
 
+    @ApiProperty({
+        example: 'user_id',
+        description: 'The user ID creating the picture',
+        required: true
+      })
+      readonly userId: string;
+
+    @ApiProperty({
+        example: 'event_id',
+        description: 'The event ID creating the picture',
+        required: true
+      })
+      readonly eventId: string;
+
     @ApiProperty({ 
         example: 'C:/pictures/yuval.jpg',
         description: 'The path of the saved picture',

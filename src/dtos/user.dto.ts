@@ -13,6 +13,12 @@ export class CreateUserDto {
   
     @ApiProperty({ example: 'password123', description: 'The password of the User' })
     readonly password: string;
+
+    @ApiProperty({ 
+        example: 'C:/pictures/yuval.jpg',
+        description: 'The path of the saved profile picture',
+    })
+    readonly picture_path: string;
   
     @ApiProperty({
         type: CreateCommentDto,

@@ -1,12 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
-import { CreateUserDto } from './user.dto';
-import { Event } from '../entities/event.entity';
-import { CreateCommentDto, UpdateCommentDto } from './comment.dto';
 import { Picture } from 'src/entities/picture.entity';
 import { CreatePictureDto, UpdatePictureDto } from './picture.dto';
 
 export class CreateEventDto {
+
+    @ApiProperty({
+        example: 'user_id',
+        description: 'The user ID creating the event',
+        required: true
+      })
+      readonly userId: string;
     
     @ApiProperty({ 
         example: 'Tel Aviv, alenby 5',
@@ -26,12 +30,12 @@ export class CreateEventDto {
         required: true })
     readonly title: string;
 
-    @ApiProperty({ 
-        type: CreatePictureDto,
-        description: 'The event picture',
-        required: true
-    })
-    readonly event_pic: Picture;
+    @ApiProperty({
+        example: 'picture_id',
+        description: 'The picture ID of the event',
+        required: false
+      })
+      readonly pictureId: string;
 
     @ApiProperty({ 
         example: '01.01.01',

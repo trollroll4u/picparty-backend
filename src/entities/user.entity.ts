@@ -20,15 +20,19 @@ export class User extends Document {
   @Prop({ required: true })
   password!: string;
 
-  @ApiProperty({ type: () => [Event] }) // Use lazy loading for Event array
+  @ApiProperty({ required: false })
+  @Prop({ required: false })
+  picture_path: string;
+
+  @ApiProperty({ type: () => [Event] })
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Event' })
   events: Event[] | [];
 
-  @ApiProperty({ type: () => [Picture] }) // Use lazy loading for Picture array
+  @ApiProperty({ type: () => [Picture] })
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Picture' })
   pictures: Picture[] | [];
 
-  @ApiProperty({ type: () => [Comment] }) // Use lazy loading for Comment array
+  @ApiProperty({ type: () => [Comment] })
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Comment' })
   comments: Comment[] | [];
 }

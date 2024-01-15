@@ -8,11 +8,11 @@ import { Picture } from './picture.entity';
 @Schema()
 export class Event extends Document {
 
-  @ApiProperty({ required: true, type: () => User }) // Use lazy loading for User
+  @ApiProperty({ required: true, type: () => User })
   @Prop({ required: true, type: MongooseSchema.Types.ObjectId, ref: 'User' })
   user!: User;
 
-  @ApiProperty({ type: () => [Picture] }) // Use lazy loading for Picture array
+  @ApiProperty({ type: () => [Picture] })
   @Prop()
   pictures: Picture[];
 
