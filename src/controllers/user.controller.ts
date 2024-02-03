@@ -1,5 +1,5 @@
 // user.controller.ts
-import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
@@ -32,7 +32,7 @@ export class UserController {
     return this.userService.readAllUsers();
   }
 
-  @Patch('update/:userId')
+  @Put('update/:userId')
   @ApiOperation({ summary: 'Update a User' })
   @ApiResponse({ status: 200, description: 'User updated', type: User })
   @ApiResponse({ status: 404, description: 'User not found' })

@@ -1,5 +1,5 @@
 // event.controller.ts
-import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { EventService } from '../services/event.service';
 import { CreateEventDto, UpdateEventDto } from '../dtos/event.dto';
@@ -32,7 +32,7 @@ export class EventController {
     return this.eventService.readAllEvents();
   }
 
-  @Patch('update/:eventId')
+  @Put('update/:eventId')
   @ApiOperation({ summary: 'Update a Event' })
   @ApiResponse({ status: 200, description: 'Event updated', type: Event })
   @ApiResponse({ status: 404, description: 'Event not found' })

@@ -1,5 +1,5 @@
 // comment.controller.ts
-import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommentService } from '../services/comment.service';
 import { CreateCommentDto, UpdateCommentDto } from '../dtos/comment.dto';
@@ -32,7 +32,7 @@ export class CommentController {
     return this.commentService.readAllComments();
   }
 
-  @Patch('update/:commentId')
+  @Put('update/:commentId')
   @ApiOperation({ summary: 'Update a Comment' })
   @ApiResponse({ status: 200, description: 'Comment updated', type: Comment })
   @ApiResponse({ status: 404, description: 'Comment not found' })

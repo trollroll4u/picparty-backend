@@ -3,18 +3,27 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { User } from './user.entity';
-import { Picture } from './picture.entity';
+import { Comment } from './comment.entity';
+import { UUID } from 'crypto';
 
 @Schema()
 export class Event extends Document {
 
   @ApiProperty({ required: true, type: () => User })
   @Prop({ required: true, type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  user!: User;
+  user_id!: string;
 
-  @ApiProperty({ type: () => [Picture] })
+  @ApiProperty({ type: () => [Comment] })
   @Prop()
-  pictures: Picture[];
+  pictures: Comment[];
+
+  @ApiProperty({ type: () => [Comment] })
+  @Prop()
+  comments: Comment[];
+
+  @ApiProperty({ type: () => [Comment] })
+  @Prop()
+  likes: Comment[];
 
   @ApiProperty({ required: true })
   @Prop({ required: true })
@@ -30,7 +39,7 @@ export class Event extends Document {
 
   @ApiProperty({ required: true })
   @Prop({ required: true })
-  event_pic: Picture;
+  event_pic_path: string;
 
   @ApiProperty({ required: true })
   @Prop({ required: true })

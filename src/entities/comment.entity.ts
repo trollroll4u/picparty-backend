@@ -8,21 +8,25 @@ import { Picture } from './picture.entity';
 @Schema()
 export class Comment extends Document {
 
-  @ApiProperty({ required: true, type: () => User }) // Use lazy loading for User
-  @Prop({ required: true, type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  user!: User;
-
-  @ApiProperty({ required: true, type: () => Picture }) // Use lazy loading for Picture
-  @Prop({ required: true, type: MongooseSchema.Types.ObjectId, ref: 'Picture' })
-  picture!: Picture;
-
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: true }) // Use lazy loading for User
   @Prop({ required: true })
-  message!: string;
+  user_id!: string;
+
+  @ApiProperty({ required: true }) // Use lazy loading for User
+  @Prop({ required: true })
+  event_id!: string;
 
   @ApiProperty()
   @Prop()
-  likes: number | 0;
+  picture_path: string;
+
+  @ApiProperty()
+  @Prop()
+  comment: string;
+
+  @ApiProperty()
+  @Prop()
+  like: boolean;
 
 }
 

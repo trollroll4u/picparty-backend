@@ -11,27 +11,20 @@ import { Picture } from '../entities/picture.entity';
 export class EventService {
   constructor(
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
-    @InjectModel(Picture.name) private readonly pictureModel: Model<Picture>,
     @InjectModel(User.name) private readonly userModel: Model<User>) {}
   
 
     async createEvent(createEventDto: CreateEventDto): Promise<Event> {
-      const { userId, pictureId, ...rest } = createEventDto;
+      const { user_id, ...rest } = createEventDto;
   
-      const user = await this.userModel.findById(userId);
+      const user = await this.userModel.findById(user_id);
       if (!user) {
         throw new NotFoundException('User not found');
-      }
-
-      const picture = await this.pictureModel.findById(pictureId);
-      if (!user) {
-        throw new NotFoundException('Picture not found');
       }
   
       const createdEvent = new this.eventModel({
         ...rest,
-        user: user,
-        picture: picture
+        user_id: user_id
       });
   
       return createdEvent.save();

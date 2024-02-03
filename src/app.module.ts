@@ -9,7 +9,7 @@ import { CommentModule } from './modules/comment.module';
 @Module({
   imports: [
     UserModule,
-    PictureModule,
+    // PictureModule,
     EventModule,
     CommentModule,
     // ConfigModule,

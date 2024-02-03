@@ -5,12 +5,10 @@ import { EventController } from '../controllers/event.controller';
 import { EventService } from '../services/event.service';
 import { Event, EventSchema } from '..//entities/event.entity';
 import { User, UserSchema } from '../entities/user.entity';
-import { Picture, PictureSchema } from '../entities/picture.entity';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: User.name, schema: UserSchema },
-    { name: Picture.name, schema: PictureSchema },
     { name: Event.name, schema: EventSchema }])],
   controllers: [EventController],
   providers: [EventService],

@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateCommentDto, UpdateCommentDto } from './comment.dto';
-import { Picture } from 'src/entities/picture.entity';
-import { CreatePictureDto, UpdatePictureDto } from './picture.dto';
 import { CreateEventDto, UpdateEventDto } from './event.dto';
 
 export class CreateUserDto {
@@ -18,26 +16,33 @@ export class CreateUserDto {
         example: 'C:/pictures/yuval.jpg',
         description: 'The path of the saved profile picture',
     })
-    readonly picture_path: string;
+    readonly profile_pic_path: string;
   
     @ApiProperty({
         type: CreateCommentDto,
         isArray: true,
-        description: 'The array of Comment objects',
+        description: 'The array of Comments',
         required: false })
     readonly comments?: Comment[];
   
     @ApiProperty({
-        type: CreatePictureDto,
+        type: CreateCommentDto,
         isArray: true,
-        description: 'The array of Picture objects',
+        description: 'The array of Pictures',
         required: false })
-    readonly pictures?: Picture[];
+    readonly pictures?: Comment[];
+
+    @ApiProperty({
+        type: CreateCommentDto,
+        isArray: true,
+        description: 'The array of Likes',
+        required: false })
+    readonly likes?: Comment[];
   
     @ApiProperty({
         type: CreateEventDto,
         isArray: true,
-        description: 'The array of Event objects',
+        description: 'The array of Events',
         required: false })
     readonly events?: Event[];
   }
@@ -51,20 +56,33 @@ export class UpdateUserDto {
   
     @ApiProperty({ example: 'newpassword123', description: 'The new password of the User' })
     readonly password?: string;
+
+    @ApiProperty({ 
+        example: 'C:/pictures/yuval.jpg',
+        description: 'The path of the saved profile picture',
+    })
+    readonly profile_pic_path?: string;
     
     @ApiProperty({
         type: UpdateCommentDto,
         isArray: true,
-        description: 'The array of Comment objects',
+        description: 'The array of Comments',
         required: false })
     readonly comments?: Comment[];
   
     @ApiProperty({
-        type: UpdatePictureDto,
+        type: UpdateCommentDto,
         isArray: true,
-        description: 'The array of Picture objects',
+        description: 'The array of Pictures',
         required: false })
-    readonly pictures?: Picture[];
+    readonly pictures?: Comment[];
+
+    @ApiProperty({
+        type: UpdateCommentDto,
+        isArray: true,
+        description: 'The array of Likes',
+        required: false })
+    readonly likes?: Comment[];
   
     @ApiProperty({
         type: UpdateEventDto,
