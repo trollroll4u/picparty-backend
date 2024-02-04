@@ -27,7 +27,17 @@ export class EventService {
         user_id: user_id
       });
   
-      return createdEvent.save();
+      
+      // Save the event
+      await createdEvent.save();
+
+      // Add the event to the user's events array
+      user.events.push(createdEvent);
+
+      // Save the user with the updated events array
+      await user.save();
+
+      return createdEvent;
     }
 
   async readEvent(eventId: string): Promise<Event> {
