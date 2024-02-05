@@ -14,6 +14,45 @@ export class CommentService {
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
     @InjectModel(User.name) private readonly userModel: Model<User>) {}
 
+
+    async commentType(commentCreated: Comment, user: User, event: Event): Promise<void> {
+      const { like, picture_path, comment } = commentCreated;
+    
+      // Check if exactly one of the properties has a value
+      if (
+        (like && picture_path == "" && comment == "") ||
+        (!like && picture_path != "" && comment == "") ||
+        (!like && picture_path == "" && comment != "")
+      ) {
+        // Only one of the properties has a value
+    
+        if (like) {
+          // Logic for handling like
+          event.likes.push(commentCreated);
+          user.likes.push(commentCreated);
+        }
+    
+        if (picture_path) {
+          event.pictures.push(commentCreated);
+          user.pictures.push(commentCreated);
+        }
+    
+        if (comment) {
+          event.comments.push(commentCreated);
+          user.comments.push(commentCreated);
+        }
+    
+        // Common logic
+        await user.save();
+        await event.save();
+      } else {
+        // Handle the case where more than one or none of the properties have a value
+        throw new Error('Invalid comment structure: Only one of like, picture, or comment should have a value.');
+      }
+    }
+    
+    
+
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const { user_id, event_id, ...rest} = createCommentDto;
 
@@ -35,13 +74,7 @@ export class CommentService {
 
     await createdComment.save();
 
-    user.comments.push(createdComment)
-
-    await user.save();
-
-    event.comments.push(createdComment)
-
-    await event.save();
+    await this.commentType(createdComment, user, event)
 
     return createdComment;
   }
