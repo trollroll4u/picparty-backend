@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateCommentDto, UpdateCommentDto } from './comment.dto';
 import { CreateEventDto, UpdateEventDto } from './event.dto';
+import { Event } from 'src/entities/event.entity';
+import { Comment } from 'src/entities/comment.entity';
 
 export class CreateUserDto {
     @ApiProperty({ example: 'John Doe', description: 'The name of the User' })

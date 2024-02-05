@@ -52,6 +52,18 @@ export class EventService {
     return this.eventModel.find().exec();
   }
 
+  async readAllEventsByUser(user_id : string): Promise<Event[]> {
+
+    const user = await this.userModel.findById(user_id);
+
+    const userEvents = await Promise.all(
+      user.events.map(async (eve) => {
+        return await this.eventModel.findById(eve)
+      })
+    )
+    return userEvents
+  }
+
   async updateEvent(eventId: string, updateEventDto: UpdateEventDto): Promise<Event> {
     const event = await this.eventModel.findById(eventId);
     if (!event) {

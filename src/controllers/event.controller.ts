@@ -25,6 +25,14 @@ export class EventController {
     return this.eventService.readEvent(eventId);
   }
 
+  @Get('get_by_user/:userId')
+  @ApiOperation({ summary: 'Get events by user ID' })
+  @ApiResponse({ status: 200, description: 'Events details', type: [Event] })
+  @ApiResponse({ status: 404, description: 'Event not found' })
+  readAllEventsByUser(@Param('userId') userId: string) {
+    return this.eventService.readAllEventsByUser(userId);
+  }
+
   @Get('get')
   @ApiOperation({ summary: 'List all events' })
   @ApiResponse({ status: 200, description: 'A list of events', type: [Event] })
