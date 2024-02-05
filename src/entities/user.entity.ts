@@ -24,19 +24,19 @@ export class User extends Document {
   profile_pic_path: string;
 
   @ApiProperty({ type: () => [Event] })
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Event' }] })
+  @Prop()
   events: Event[];
 
   @ApiProperty({ type: () => [Comment] })
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Comment' }] })
+  @Prop()
   pictures: Comment[];
 
   @ApiProperty({ type: () => [Comment] })
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Comment' }] })
+  @Prop()
   comments: Comment[];
 
   @ApiProperty({ type: () => [Comment] })
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Comment' }] })
+  @Prop()
   likes: Comment[];
 }
 

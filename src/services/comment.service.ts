@@ -33,7 +33,17 @@ export class CommentService {
       event_id: event_id
     });
 
-    return createdComment.save();
+    await createdComment.save();
+
+    user.comments.push(createdComment)
+
+    await user.save();
+
+    event.comments.push(createdComment)
+
+    await event.save();
+
+    return createdComment;
   }
 
   async readComment(commentId: string): Promise<Comment> {
@@ -46,6 +56,28 @@ export class CommentService {
 
   async readAllComments(): Promise<Comment[]> {
     return this.commentModel.find().exec();
+  }
+
+  async readAllCommentsByUser(user_id: string): Promise<Comment[]> {
+    const user = await this.userModel.findById(user_id);
+
+    const userComments = await Promise.all(
+      user.comments.map(async (com) => {
+        return await this.commentModel.findById(com);
+      })
+    )
+    return userComments
+  }
+
+  async readAllCommentsByEvent(event_id: string): Promise<Comment[]> {
+    const event = await this.eventModel.findById(event_id);
+
+    const eventComments = await Promise.all(
+      event.comments.map(async (com) => {
+        return await this.commentModel.findById(com);
+      })
+    )
+    return eventComments
   }
 
   async updateComment(commentId: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {

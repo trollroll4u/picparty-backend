@@ -25,6 +25,22 @@ export class CommentController {
     return this.commentService.readComment(commentId);
   }
 
+  @Get('get_by_user/:userId')
+  @ApiOperation({ summary: 'Get comments by user ID' })
+  @ApiResponse({ status: 200, description: 'Comments details', type: [Comment] })
+  @ApiResponse({ status: 404, description: 'Comment not found' })
+  readAllCommentsByUser(@Param('userId') userId: string) {
+    return this.commentService.readAllCommentsByUser(userId);
+  }
+
+  @Get('get_by_event/:eventId')
+  @ApiOperation({ summary: 'Get comments by event ID' })
+  @ApiResponse({ status: 200, description: 'Comments details', type: [Event] })
+  @ApiResponse({ status: 404, description: 'comment not found' })
+  readAllCommentsByEvent(@Param('eventId') eventId: string) {
+    return this.commentService.readAllCommentsByEvent(eventId);
+  }
+
   @Get('get')
   @ApiOperation({ summary: 'List all comments' })
   @ApiResponse({ status: 200, description: 'A list of comments', type: [Comment] })
