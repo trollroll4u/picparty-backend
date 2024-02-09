@@ -4,6 +4,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { EventService } from '../services/event.service';
 import { CreateEventDto, UpdateEventDto } from '../dtos/event.dto';
 import { Event } from '../entities/event.entity';
+import { Comment } from '../entities/comment.entity';
 
 @ApiTags('events')
 @Controller('events')
@@ -23,6 +24,30 @@ export class EventController {
   @ApiResponse({ status: 404, description: 'Event not found' })
   readEvent(@Param('eventId') eventId: string) {
     return this.eventService.readEvent(eventId);
+  }
+
+  @Get('get_pictures/:eventId')
+  @ApiOperation({ summary: 'Get a events pictures by ID' })
+  @ApiResponse({ status: 200, description: 'Events pictures details', type: [Comment] })
+  @ApiResponse({ status: 404, description: 'Event not found' })
+  readPicturesByEvent(@Param('eventId') eventId: string) {
+    return this.eventService.readPicturesByEvent(eventId);
+  }
+
+  @Get('get_comments/:eventId')
+  @ApiOperation({ summary: 'Get a events comments by ID' })
+  @ApiResponse({ status: 200, description: 'Events comments details', type: [Comment] })
+  @ApiResponse({ status: 404, description: 'Event not found' })
+  readCommentsByEvent(@Param('eventId') eventId: string) {
+    return this.eventService.readCommentsByEvent(eventId);
+  }
+
+  @Get('get_likes/:eventId')
+  @ApiOperation({ summary: 'Get a events likes by ID' })
+  @ApiResponse({ status: 200, description: 'Events likes details', type: [Comment] })
+  @ApiResponse({ status: 404, description: 'Event not found' })
+  readLikesByEvent(@Param('eventId') eventId: string) {
+    return this.eventService.readLikesByEvent(eventId);
   }
 
   @Get('get_by_user/:userId')

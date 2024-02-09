@@ -4,6 +4,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommentService } from '../services/comment.service';
 import { CreateCommentDto, UpdateCommentDto } from '../dtos/comment.dto';
 import { Comment } from '../entities/comment.entity';
+import { Event } from 'src/entities/event.entity';
 
 @ApiTags('comments')
 @Controller('comments')
@@ -35,7 +36,7 @@ export class CommentController {
 
   @Get('get_by_event/:eventId')
   @ApiOperation({ summary: 'Get comments by event ID' })
-  @ApiResponse({ status: 200, description: 'Comments details', type: [Event] })
+  @ApiResponse({ status: 200, description: 'Comments details', type: [Comment] })
   @ApiResponse({ status: 404, description: 'comment not found' })
   readAllCommentsByEvent(@Param('eventId') eventId: string) {
     return this.commentService.readAllCommentsByEvent(eventId);

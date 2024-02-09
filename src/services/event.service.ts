@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { CreateEventDto, UpdateEventDto } from '../dtos/event.dto';
 import { Event } from '../entities/event.entity';
 import { User } from '../entities/user.entity';
-import { Picture } from '../entities/picture.entity';
+import { Comment } from '../entities/comment.entity';
 
 @Injectable()
 export class EventService {
@@ -50,6 +50,30 @@ export class EventService {
 
   async readAllEvents(): Promise<Event[]> {
     return this.eventModel.find().exec();
+  }
+
+  async readPicturesByEvent(eventId: string): Promise<Comment[]> {
+    const event = await this.eventModel.findById(eventId);
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    return event.pictures;
+  }
+
+  async readCommentsByEvent(eventId: string): Promise<Comment[]> {
+    const event = await this.eventModel.findById(eventId);
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    return event.comments;
+  }
+
+  async readLikesByEvent(eventId: string): Promise<Comment[]> {
+    const event = await this.eventModel.findById(eventId);
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    return event.likes;
   }
 
   async readAllEventsByUser(user_id : string): Promise<Event[]> {
