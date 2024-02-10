@@ -1,10 +1,11 @@
 // comment.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommentService } from '../services/comment.service';
 import { CreateCommentDto, UpdateCommentDto } from '../dtos/comment.dto';
 import { Comment } from '../entities/comment.entity';
-import { Event } from 'src/entities/event.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Multer } from 'multer';
 
 @ApiTags('comments')
 @Controller('comments')
@@ -12,10 +13,11 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post('create')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Create a new comment' })
   @ApiResponse({ status: 201, description: 'Comment created', type: Comment })
-  createComment(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.createComment(createCommentDto);
+  createComment(@Body() createCommentDto: CreateCommentDto, @UploadedFile() file?: Multer.File) {
+    return this.commentService.createComment(createCommentDto, file);
   }
 
   @Get('get/:commentId')

@@ -6,18 +6,21 @@ import { CreateCommentDto, UpdateCommentDto } from '../dtos/comment.dto';
 import { Comment } from '../entities/comment.entity';
 import { User } from '../entities/user.entity';
 import { Event } from '../entities/event.entity';
+import { Multer } from 'multer';
+import { FileService } from './file.service';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
-    @InjectModel(User.name) private readonly userModel: Model<User>) {}
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly fileService: FileService) {}
 
 
-    async commentType(commentCreated: Comment, user: User, event: Event): Promise<void> {
+    async commentType(commentCreated: Comment, user: User, event: Event, file?: Multer.File): Promise<void> {
       const { like, picture_path, comment } = commentCreated;
-    
+      
       // Check if exactly one of the properties has a value
       if (
         (like && picture_path == "" && comment == "") ||
@@ -35,6 +38,13 @@ export class CommentService {
         if (picture_path) {
           event.pictures.push(commentCreated);
           user.pictures.push(commentCreated);
+          const fileExtension = this.fileService.getFileExtension(file.originalname);
+          const filePath = `./images/${commentCreated._id}.${fileExtension}`;
+          if (file.path) {
+            await this.fileService.saveFile(file.path, filePath);
+          } else {
+            await this.fileService.saveFileFromBuffer(file.buffer, filePath);
+          }
         }
     
         if (comment) {
@@ -53,7 +63,7 @@ export class CommentService {
     
     
 
-  async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
+  async createComment(createCommentDto: CreateCommentDto, file?: Multer.File): Promise<Comment> {
     const { user_id, event_id, ...rest} = createCommentDto;
 
     const user = await this.userModel.findById(user_id);
@@ -74,7 +84,7 @@ export class CommentService {
 
     await createdComment.save();
 
-    await this.commentType(createdComment, user, event)
+    await this.commentType(createdComment, user, event, file)
 
     return createdComment;
   }
