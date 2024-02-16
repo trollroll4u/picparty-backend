@@ -19,13 +19,13 @@ export class CommentService {
 
 
     async commentType(commentCreated: Comment, user: User, event: Event, file?: Multer.File): Promise<void> {
-      const { like, picture_path, comment } = commentCreated;
+      const { like, pic_file, comment } = commentCreated;
       
       // Check if exactly one of the properties has a value
       if (
-        (like && picture_path == "" && comment == "") ||
-        (!like && picture_path != "" && comment == "") ||
-        (!like && picture_path == "" && comment != "")
+        (like && pic_file && comment == "") ||
+        (!like && pic_file && comment == "") ||
+        (!like && pic_file && comment != "")
       ) {
         // Only one of the properties has a value
     
@@ -35,7 +35,7 @@ export class CommentService {
           user.likes.push(commentCreated);
         }
     
-        if (picture_path) {
+        if (pic_file) {
           event.pictures.push(commentCreated);
           user.pictures.push(commentCreated);
           const fileExtension = this.fileService.getFileExtension(file.originalname);
@@ -60,8 +60,6 @@ export class CommentService {
         throw new Error('Invalid comment structure: Only one of like, picture, or comment should have a value.');
       }
     }
-    
-    
 
   async createComment(createCommentDto: CreateCommentDto, file?: Multer.File): Promise<Comment> {
     const { user_id, event_id, ...rest} = createCommentDto;
@@ -101,6 +99,10 @@ export class CommentService {
     return this.commentModel.find().exec();
   }
 
+  async readAllPictureComments(): Promise<Comment[]> {
+    return this.commentModel.find({ picture_path: { $exists: true, $ne: '' } }).exec();
+  }
+
   async readAllCommentsByUser(user_id: string): Promise<Comment[]> {
     const user = await this.userModel.findById(user_id);
 
@@ -123,10 +125,20 @@ export class CommentService {
     return eventComments
   }
 
-  async updateComment(commentId: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
+  async updateComment(commentId: string, updateCommentDto: UpdateCommentDto, file?: Multer.File): Promise<Comment> {
     const comment = await this.commentModel.findById(commentId);
     if (!comment) {
       throw new NotFoundException('Comment not found');
+    }
+    if (file) {
+      this.fileService.deleteFileById((comment._id).toString())
+      const fileExtension = this.fileService.getFileExtension(file.originalname);
+      const filePath = `./images/${commentId}.${fileExtension}`;
+      if (file.path) {
+        await this.fileService.saveFile(file.path, filePath);
+      } else {
+        await this.fileService.saveFileFromBuffer(file.buffer, filePath);
+      }
     }
     comment.set(updateCommentDto);
     return comment.save();

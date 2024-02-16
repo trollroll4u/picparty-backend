@@ -51,12 +51,20 @@ export class CommentController {
     return this.commentService.readAllComments();
   }
 
+  @Get('get_pictures')
+  @ApiOperation({ summary: 'List all picture comments' })
+  @ApiResponse({ status: 200, description: 'A list of picture comments', type: [Comment] })
+  readAllPictureComments() {
+    return this.commentService.readAllPictureComments();
+  }
+
   @Put('update/:commentId')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Update a Comment' })
   @ApiResponse({ status: 200, description: 'Comment updated', type: Comment })
   @ApiResponse({ status: 404, description: 'Comment not found' })
-  updateComment(@Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.updateComment(commentId, updateCommentDto);
+  updateComment(@Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto, @UploadedFile() file?: Multer.File) {
+    return this.commentService.updateComment(commentId, updateCommentDto, file);
   }
 
   @Delete('delete/:commentId')

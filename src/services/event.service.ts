@@ -6,18 +6,21 @@ import { CreateEventDto, UpdateEventDto } from '../dtos/event.dto';
 import { Event } from '../entities/event.entity';
 import { User } from '../entities/user.entity';
 import { Comment } from '../entities/comment.entity';
+import { FileService } from './file.service';
+import { Multer } from 'multer';
 
 @Injectable()
 export class EventService {
   constructor(
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
-    @InjectModel(User.name) private readonly userModel: Model<User>) {}
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly fileService: FileService) {}
   
 
-    async createEvent(createEventDto: CreateEventDto): Promise<Event> {
+    async createEvent(createEventDto: CreateEventDto, file?: Multer.File): Promise<Event> {
       const { user_id, ...rest } = createEventDto;
   
-      const user = await this.userModel.findById(user_id);
+      const user = await this.userModel.findById(user_id); 
       if (!user) {
         throw new NotFoundException('User not found');
       }
@@ -37,6 +40,15 @@ export class EventService {
       // Save the user with the updated events array
       await user.save();
 
+      if (file) {
+        const fileExtension = this.fileService.getFileExtension(file.originalname);
+        const filePath = `./images/${createdEvent._id}.${fileExtension}`;
+        if (file.path) {
+          await this.fileService.saveFile(file.path, filePath);
+        } else {
+          await this.fileService.saveFileFromBuffer(file.buffer, filePath);
+        }
+      }
       return createdEvent;
     }
 
@@ -88,10 +100,20 @@ export class EventService {
     return userEvents
   }
 
-  async updateEvent(eventId: string, updateEventDto: UpdateEventDto): Promise<Event> {
+  async updateEvent(eventId: string, updateEventDto: UpdateEventDto, file?: Multer.File): Promise<Event> {
     const event = await this.eventModel.findById(eventId);
     if (!event) {
       throw new NotFoundException('Event not found');
+    }
+    if (file) {
+      this.fileService.deleteFileById((event._id).toString())
+      const fileExtension = this.fileService.getFileExtension(file.originalname);
+      const filePath = `./images/${eventId}.${fileExtension}`;
+      if (file.path) {
+        await this.fileService.saveFile(file.path, filePath);
+      } else {
+        await this.fileService.saveFileFromBuffer(file.buffer, filePath);
+      }
     }
     event.set(updateEventDto);
     return event.save();

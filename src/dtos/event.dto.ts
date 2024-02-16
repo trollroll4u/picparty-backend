@@ -30,11 +30,11 @@ export class CreateEventDto {
     readonly title?: string;
 
     @ApiProperty({
-        example: 'picture_id',
-        description: 'The path of the event picture',
+        example: true,
+        description: 'Does the event has a picture',
         required: false
       })
-      readonly event_pic_path?: string;
+      readonly event_pic_file?: boolean;
 
     @ApiProperty({ 
         example: '01.01.01',
@@ -110,11 +110,11 @@ export class UpdateEventDto {
     readonly title?: string;
 
     @ApiProperty({ 
-        example: 'c:/pic.jpg',
-        description: 'The event picture',
+        example: true,
+        description: 'Does the event has a picture?',
         required: false
     })
-    readonly event_pic_path?: string;
+    readonly event_pic_file?: boolean;
 
     @ApiProperty({ 
         example: '01.01.01',

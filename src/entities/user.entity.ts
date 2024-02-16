@@ -21,7 +21,7 @@ export class User extends Document {
 
   @ApiProperty({ required: false })
   @Prop({ required: false })
-  profile_pic_path: string;
+  profile_pic_file: boolean;
 
   @ApiProperty({ type: () => [Event] })
   @Prop()

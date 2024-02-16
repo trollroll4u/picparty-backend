@@ -18,11 +18,11 @@ export class CreateCommentDto {
 
 
     @ApiProperty({
-      example: 'c:/pic.jpg',
-      description: 'The comment picture path',
+      example: true,
+      description: 'Is the comment a picture?',
       required: false
     })
-    readonly picture_path?: string;
+    readonly pic_file?: boolean;
 
     @ApiProperty({ 
       example: 'Look at Ohad',
@@ -39,11 +39,11 @@ export class CreateCommentDto {
 
 export class UpdateCommentDto {
     @ApiProperty({
-      example: 'c:/pic.jpg',
-      description: 'The comment picture path',
+      example: true,
+      description: 'Is the comment a picture?',
       required: false
     })
-    readonly picture_path?: string;
+    readonly picture_file?: boolean;
 
     @ApiProperty({ 
       example: 'Look at Ohad',

@@ -1,9 +1,11 @@
 // user.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { User } from '../entities/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Multer } from 'multer';
 
 @ApiTags('users')
 @Controller('users')
@@ -11,10 +13,11 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User created', type: User })
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  createUser(@Body() createUserDto: CreateUserDto, @UploadedFile() file?: Multer.File) {
+    return this.userService.createUser(createUserDto, file);
   }
 
   @Get('get/:userId')
@@ -33,11 +36,12 @@ export class UserController {
   }
 
   @Put('update/:userId')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Update a User' })
   @ApiResponse({ status: 200, description: 'User updated', type: User })
   @ApiResponse({ status: 404, description: 'User not found' })
-  updateUser(@Param('userId') userId: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(userId, updateUserDto);
+  updateUser(@Param('userId') userId: string, @Body() updateUserDto: UpdateUserDto, @UploadedFile() file?: Multer.File) {
+    return this.userService.updateUser(userId, updateUserDto, file);
   }
 
   @Delete('delete/:userId')

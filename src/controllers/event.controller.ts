@@ -1,10 +1,12 @@
 // event.controller.ts
-import { Controller, Get, Post, Patch, Delete, Param, Body, Put } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { EventService } from '../services/event.service';
 import { CreateEventDto, UpdateEventDto } from '../dtos/event.dto';
 import { Event } from '../entities/event.entity';
 import { Comment } from '../entities/comment.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Multer } from 'multer';
 
 @ApiTags('events')
 @Controller('events')
@@ -12,10 +14,11 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post('create')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Create a new event' })
   @ApiResponse({ status: 201, description: 'Event created', type: Event })
-  createEvent(@Body() createEventDto: CreateEventDto) {
-    return this.eventService.createEvent(createEventDto);
+  createEvent(@Body() createEventDto: CreateEventDto, @UploadedFile() file?: Multer.File) {
+    return this.eventService.createEvent(createEventDto, file);
   }
 
   @Get('get/:eventId')
@@ -66,11 +69,12 @@ export class EventController {
   }
 
   @Put('update/:eventId')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Update a Event' })
   @ApiResponse({ status: 200, description: 'Event updated', type: Event })
   @ApiResponse({ status: 404, description: 'Event not found' })
-  updateEvent(@Param('eventId') eventId: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.updateEvent(eventId, updateEventDto);
+  updateEvent(@Param('eventId') eventId: string, @Body() updateEventDto: UpdateEventDto, @UploadedFile() file?: Multer.File) {
+    return this.eventService.updateEvent(eventId, updateEventDto, file);
   }
 
   @Delete('delete/:eventId')

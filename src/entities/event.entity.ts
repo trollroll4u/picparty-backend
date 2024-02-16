@@ -38,7 +38,7 @@ export class Event extends Document {
 
   @ApiProperty({ required: true })
   @Prop({ required: true })
-  event_pic_path: string;
+  event_pic_file: boolean;
 
   @ApiProperty({ required: true })
   @Prop({ required: true })

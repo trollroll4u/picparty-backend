@@ -15,10 +15,10 @@ export class CreateUserDto {
     readonly password: string;
 
     @ApiProperty({ 
-        example: 'C:/pictures/yuval.jpg',
-        description: 'The path of the saved profile picture',
+        example: true,
+        description: 'Does have profile picture?',
     })
-    readonly profile_pic_path: string;
+    readonly profile_pic_file: boolean;
   
     @ApiProperty({
         type: CreateCommentDto,
@@ -60,10 +60,11 @@ export class UpdateUserDto {
     readonly password?: string;
 
     @ApiProperty({ 
-        example: 'C:/pictures/yuval.jpg',
-        description: 'The path of the saved profile picture',
+        example: true,
+        description: 'Does have profile picture?',
+        required: false
     })
-    readonly profile_pic_path?: string;
+    readonly profile_pic_file?: boolean;
     
     @ApiProperty({
         type: UpdateCommentDto,
