@@ -145,9 +145,27 @@ export class CommentService {
   }
 
   async deleteComment(commentId: string): Promise<void> {
-    const comment = await this.commentModel.findByIdAndDelete(commentId);
+    const comment = await this.commentModel.findById(commentId);
     if (!comment) {
       throw new NotFoundException('Comment not found');
     }
+
+    const user = await this.userModel.findById(comment.user_id);
+    if (!user) {
+      throw new NotFoundException('User not found'); 
+    }
+
+    const event = await this.eventModel.findById(comment.event_id);
+    if (!event) {
+      throw new NotFoundException('Event not found'); 
+    }
+
+    await this.commentModel.findByIdAndDelete(commentId)
+
+    const eventToRemove = event.likes.findIndex(obj => obj.id === comment.id);
+    event.likes.splice(eventToRemove, 1);
+
+    const userToRemove = user.likes.findIndex(obj => obj.id === comment.id);
+    user.likes.splice(userToRemove, 1);
   }
 }
