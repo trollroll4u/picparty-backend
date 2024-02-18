@@ -1,9 +1,15 @@
 // file.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnsupportedMediaTypeException } from '@nestjs/common';
 import * as fs from 'fs/promises';
 
 @Injectable()
 export class FileService {
+
+  isBase64 = (str: string): boolean => {
+    const base64Regex = /^(data:)([\w/+]+;base64,)?([A-Za-z0-9+/]+={0,2})$/;
+    return base64Regex.test(str);
+  };
+
   async saveFile(sourcePath: string, destinationPath: string): Promise<void> {
     console.log('Uploading picture...');
     await fs.rename(sourcePath, destinationPath);
@@ -11,6 +17,10 @@ export class FileService {
   }
 
   async saveFileFromBuffer(base64String: string, destinationPath: string): Promise<void> {
+    
+    if (!this.isBase64(base64String)) {
+      throw new UnsupportedMediaTypeException(`not base64`);
+    }
     console.log('Uploading picture...');
     const imageBuffer = Buffer.from(base64String, 'base64');
     await fs.writeFile(destinationPath, imageBuffer);
@@ -34,7 +44,7 @@ export class FileService {
     } catch (error) {
       if (error.code === 'ENOENT') {
         // File not found
-        throw new NotFoundException(`File not found for id ${id}`);
+        // throw new NotFoundException(`File not found for id ${id}`);
       }
       throw error; // Propagate other errors
     }

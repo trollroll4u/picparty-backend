@@ -30,7 +30,7 @@ export class CreateEventDto {
     readonly title?: string;
 
     @ApiProperty({
-        example: true,
+        example: "base64",
         description: 'base64',
         required: false
       })
@@ -110,7 +110,7 @@ export class UpdateEventDto {
     readonly title?: string;
 
     @ApiProperty({ 
-        example: true,
+        example: "base64",
         description: 'base64',
         required: false
     })

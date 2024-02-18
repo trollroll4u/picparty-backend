@@ -15,7 +15,7 @@ export class CreateUserDto {
     readonly password: string;
 
     @ApiProperty({ 
-        example: true,
+        example: "base64",
         description: 'base64',
     })
     readonly profile_pic_file: string;
@@ -60,7 +60,7 @@ export class UpdateUserDto {
     readonly password?: string;
 
     @ApiProperty({ 
-        example: true,
+        example: "base64",
         description: 'base64',
         required: false
     })

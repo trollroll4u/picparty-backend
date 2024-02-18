@@ -99,7 +99,7 @@ export class EventService {
     if (!event) {
       throw new NotFoundException('Event not found');
     }
-    if (event.event_pic_file != "") {
+    if ("event_pic_file" in updateEventDto) {
       this.fileService.deleteFileById((event._id).toString())
       const filePath = `./images/${eventId}.jpg`;
       await this.fileService.saveFileFromBuffer(event.event_pic_file, filePath);
@@ -109,9 +109,20 @@ export class EventService {
   }
 
   async deleteEvent(eventId: string): Promise<void> {
-    const event = await this.eventModel.findByIdAndDelete(eventId);
+    const event = await this.eventModel.findById(eventId);
     if (!event) {
       throw new NotFoundException('Event not found');
     }
+
+    const user = await this.userModel.findById(event.user_id);
+    if (!user) {
+      throw new NotFoundException('User not found'); 
+    }
+
+    const userToRemove = user.events.findIndex(obj => obj._id == eventId);
+    user.events.splice(userToRemove, 1);
+    user.save()
+
+    await this.eventModel.findByIdAndDelete(eventId);
   }
 }

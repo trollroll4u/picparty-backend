@@ -2,7 +2,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { User } from './user.entity';
 import { Comment } from './comment.entity';
 
 @Schema()

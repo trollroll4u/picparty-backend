@@ -152,10 +152,12 @@ export class CommentService {
 
     await this.commentModel.findByIdAndDelete(commentId)
 
-    const eventToRemove = event.likes.findIndex(obj => obj.id === comment.id);
+    const eventToRemove = event.likes.findIndex(obj => obj._id === commentId);
     event.likes.splice(eventToRemove, 1);
+    event.save()
 
-    const userToRemove = user.likes.findIndex(obj => obj.id === comment.id);
+    const userToRemove = user.likes.findIndex(obj => obj._id === commentId);
     user.likes.splice(userToRemove, 1);
+    user.save()
   }
 }

@@ -18,7 +18,7 @@ export class CreateCommentDto {
 
 
     @ApiProperty({
-      example: true,
+      example: "base64",
       description: 'base64',
       required: false
     })
@@ -39,7 +39,7 @@ export class CreateCommentDto {
 
 export class UpdateCommentDto {
     @ApiProperty({
-      example: true,
+      example: "base64",
       description: 'base64',
       required: false
     })

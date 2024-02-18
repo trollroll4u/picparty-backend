@@ -38,7 +38,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    if (user.profile_pic_file != "") {
+    if ("profile_pic_file" in updateUserDto) {
       this.fileService.deleteFileById((user._id).toString())
       const filePath = `./images/${userId}.jpg`;
       await this.fileService.saveFileFromBuffer(user.profile_pic_file, filePath);
