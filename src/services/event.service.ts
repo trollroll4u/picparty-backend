@@ -7,7 +7,6 @@ import { Event } from '../entities/event.entity';
 import { User } from '../entities/user.entity';
 import { Comment } from '../entities/comment.entity';
 import { FileService } from './file.service';
-import { Multer } from 'multer';
 
 @Injectable()
 export class EventService {
@@ -17,7 +16,7 @@ export class EventService {
     private readonly fileService: FileService) {}
   
 
-    async createEvent(createEventDto: CreateEventDto, file?: Multer.File): Promise<Event> {
+    async createEvent(createEventDto: CreateEventDto): Promise<Event> {
       const { user_id, ...rest } = createEventDto;
   
       const user = await this.userModel.findById(user_id); 
@@ -40,14 +39,9 @@ export class EventService {
       // Save the user with the updated events array
       await user.save();
 
-      if (file) {
-        const fileExtension = this.fileService.getFileExtension(file.originalname);
-        const filePath = `./images/${createdEvent._id}.${fileExtension}`;
-        if (file.path) {
-          await this.fileService.saveFile(file.path, filePath);
-        } else {
-          await this.fileService.saveFileFromBuffer(file.buffer, filePath);
-        }
+      if (createdEvent.event_pic_file != "") {
+        const filePath = `./images/${createdEvent._id}.jpg`;
+        await this.fileService.saveFileFromBuffer(createdEvent.event_pic_file, filePath);
       }
       return createdEvent;
     }
@@ -100,20 +94,15 @@ export class EventService {
     return userEvents
   }
 
-  async updateEvent(eventId: string, updateEventDto: UpdateEventDto, file?: Multer.File): Promise<Event> {
+  async updateEvent(eventId: string, updateEventDto: UpdateEventDto): Promise<Event> {
     const event = await this.eventModel.findById(eventId);
     if (!event) {
       throw new NotFoundException('Event not found');
     }
-    if (file) {
+    if (event.event_pic_file != "") {
       this.fileService.deleteFileById((event._id).toString())
-      const fileExtension = this.fileService.getFileExtension(file.originalname);
-      const filePath = `./images/${eventId}.${fileExtension}`;
-      if (file.path) {
-        await this.fileService.saveFile(file.path, filePath);
-      } else {
-        await this.fileService.saveFileFromBuffer(file.buffer, filePath);
-      }
+      const filePath = `./images/${eventId}.jpg`;
+      await this.fileService.saveFileFromBuffer(event.event_pic_file, filePath);
     }
     event.set(updateEventDto);
     return event.save();

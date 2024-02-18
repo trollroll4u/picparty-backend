@@ -18,7 +18,7 @@ export class Comment extends Document {
 
   @ApiProperty()
   @Prop()
-  pic_file: boolean;
+  pic_file: string;
 
   @ApiProperty()
   @Prop()

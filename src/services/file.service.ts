@@ -10,9 +10,10 @@ export class FileService {
     console.log('File uploaded successfully.');
   }
 
-  async saveFileFromBuffer(buffer: Buffer, destinationPath: string): Promise<void> {
+  async saveFileFromBuffer(base64String: string, destinationPath: string): Promise<void> {
     console.log('Uploading picture...');
-    await fs.writeFile(destinationPath, buffer);
+    const imageBuffer = Buffer.from(base64String, 'base64');
+    await fs.writeFile(destinationPath, imageBuffer);
     console.log('File uploaded successfully.');
   }
 

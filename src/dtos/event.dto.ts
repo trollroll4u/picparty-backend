@@ -31,10 +31,10 @@ export class CreateEventDto {
 
     @ApiProperty({
         example: true,
-        description: 'Does the event has a picture',
+        description: 'base64',
         required: false
       })
-      readonly event_pic_file?: boolean;
+      readonly event_pic_file?: string;
 
     @ApiProperty({ 
         example: '01.01.01',
@@ -111,10 +111,10 @@ export class UpdateEventDto {
 
     @ApiProperty({ 
         example: true,
-        description: 'Does the event has a picture?',
+        description: 'base64',
         required: false
     })
-    readonly event_pic_file?: boolean;
+    readonly event_pic_file?: string;
 
     @ApiProperty({ 
         example: '01.01.01',

@@ -16,9 +16,9 @@ export class CreateUserDto {
 
     @ApiProperty({ 
         example: true,
-        description: 'Does have profile picture?',
+        description: 'base64',
     })
-    readonly profile_pic_file: boolean;
+    readonly profile_pic_file: string;
   
     @ApiProperty({
         type: CreateCommentDto,
@@ -61,10 +61,10 @@ export class UpdateUserDto {
 
     @ApiProperty({ 
         example: true,
-        description: 'Does have profile picture?',
+        description: 'base64',
         required: false
     })
-    readonly profile_pic_file?: boolean;
+    readonly profile_pic_file?: string;
     
     @ApiProperty({
         type: UpdateCommentDto,

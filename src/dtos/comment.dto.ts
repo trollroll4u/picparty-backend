@@ -19,10 +19,10 @@ export class CreateCommentDto {
 
     @ApiProperty({
       example: true,
-      description: 'Is the comment a picture?',
+      description: 'base64',
       required: false
     })
-    readonly pic_file?: boolean;
+    readonly pic_file?: string;
 
     @ApiProperty({ 
       example: 'Look at Ohad',
@@ -40,10 +40,10 @@ export class CreateCommentDto {
 export class UpdateCommentDto {
     @ApiProperty({
       example: true,
-      description: 'Is the comment a picture?',
+      description: 'base64',
       required: false
     })
-    readonly picture_file?: boolean;
+    readonly pic_file?: string;
 
     @ApiProperty({ 
       example: 'Look at Ohad',

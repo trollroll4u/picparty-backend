@@ -4,8 +4,6 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommentService } from '../services/comment.service';
 import { CreateCommentDto, UpdateCommentDto } from '../dtos/comment.dto';
 import { Comment } from '../entities/comment.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Multer } from 'multer';
 
 @ApiTags('comments')
 @Controller('comments')
@@ -13,11 +11,10 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post('create')
-  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Create a new comment' })
   @ApiResponse({ status: 201, description: 'Comment created', type: Comment })
-  createComment(@Body() createCommentDto: CreateCommentDto, @UploadedFile() file?: Multer.File) {
-    return this.commentService.createComment(createCommentDto, file);
+  createComment(@Body() createCommentDto: CreateCommentDto) {
+    return this.commentService.createComment(createCommentDto);
   }
 
   @Get('get/:commentId')
@@ -59,12 +56,11 @@ export class CommentController {
   }
 
   @Put('update/:commentId')
-  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'Update a Comment' })
   @ApiResponse({ status: 200, description: 'Comment updated', type: Comment })
   @ApiResponse({ status: 404, description: 'Comment not found' })
-  updateComment(@Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto, @UploadedFile() file?: Multer.File) {
-    return this.commentService.updateComment(commentId, updateCommentDto, file);
+  updateComment(@Param('commentId') commentId: string, @Body() updateCommentDto: UpdateCommentDto) {
+    return this.commentService.updateComment(commentId, updateCommentDto);
   }
 
   @Delete('delete/:commentId')
