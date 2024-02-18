@@ -23,9 +23,9 @@ export class CommentService {
       
       // Check if exactly one of the properties has a value
       if (
-        (like && pic_file && comment == "") ||
+        (like && !pic_file && comment == "") ||
         (!like && pic_file && comment == "") ||
-        (!like && pic_file && comment != "")
+        (!like && !pic_file && comment != "")
       ) {
         // Only one of the properties has a value
     
