@@ -95,7 +95,7 @@ export class CommentService {
   }
 
   async readAllPictureComments(): Promise<Comment[]> {
-    return this.commentModel.find({ picture_path: { $exists: true, $ne: '' } }).exec();
+    return this.commentModel.find({ pic_file: { $exists: true, $ne: '' } }).exec();
   }
 
   async readAllCommentsByUser(user_id: string): Promise<Comment[]> {
