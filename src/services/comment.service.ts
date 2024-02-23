@@ -151,13 +151,14 @@ export class CommentService {
     }
 
     await this.commentModel.findByIdAndDelete(commentId)
+    const commentType = comment.like ? "likes" : comment.pic_file ? "pictures" : "comments";
 
-    const eventToRemove = event.likes.findIndex(obj => obj._id === commentId);
-    event.likes.splice(eventToRemove, 1);
+    const eventToRemove = event[commentType].findIndex(obj => obj._id === commentId);
+    event[commentType].splice(eventToRemove, 1);
     event.save()
 
-    const userToRemove = user.likes.findIndex(obj => obj._id === commentId);
-    user.likes.splice(userToRemove, 1);
+    const userToRemove = user[commentType].findIndex(obj => obj._id === commentId);
+    user[commentType].splice(userToRemove, 1);
     user.save()
   }
 }
