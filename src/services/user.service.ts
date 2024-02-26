@@ -52,5 +52,8 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    if (user.profile_pic_file) {
+      this.fileService.deleteFileById((user._id).toString())
+    }
   }
 }

@@ -114,6 +114,10 @@ export class EventService {
       throw new NotFoundException('Event not found');
     }
 
+    if (event.event_pic_file) {
+      this.fileService.deleteFileById((event._id).toString())
+    }
+
     const user = await this.userModel.findById(event.user_id);
     if (!user) {
       throw new NotFoundException('User not found'); 

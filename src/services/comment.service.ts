@@ -139,6 +139,9 @@ export class CommentService {
     if (!comment) {
       throw new NotFoundException('Comment not found');
     }
+    if (comment.pic_file != "") {
+      this.fileService.deleteFileById((comment._id).toString())
+    }
 
     const user = await this.userModel.findById(comment.user_id);
     if (!user) {
