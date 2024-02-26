@@ -95,7 +95,7 @@ export class CommentService {
   }
 
   async readAllPictureComments(): Promise<Comment[]> {
-    return this.commentModel.find({ picture_path: { $exists: true, $ne: '' } }).exec();
+    return this.commentModel.find({ pic_file: { $exists: true, $ne: '' } }).exec();
   }
 
   async readAllCommentsByUser(user_id: string): Promise<Comment[]> {
@@ -154,13 +154,12 @@ export class CommentService {
     }
 
     await this.commentModel.findByIdAndDelete(commentId)
+    const commentType = comment.like ? "likes" : comment.pic_file ? "pictures" : "comments";
 
-    const eventToRemove = event.likes.findIndex(obj => obj._id === commentId);
-    event.likes.splice(eventToRemove, 1);
+    event[commentType] = event[commentType].filter(obj =>  obj._id.toString() !== commentId);
     event.save()
 
-    const userToRemove = user.likes.findIndex(obj => obj._id === commentId);
-    user.likes.splice(userToRemove, 1);
+    user[commentType] = user[commentType].filter(obj =>  obj._id.toString() !== commentId);
     user.save()
   }
 }
