@@ -14,7 +14,7 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto);
     await createdUser.save();
-    if (createdUser.profile_pic_file != "") {
+    if (createdUser.profile_pic_file) {
       const filePath = `./images/${createdUser._id}.jpg`;
       await this.fileService.saveFileFromBuffer(createdUser.profile_pic_file, filePath);
     }

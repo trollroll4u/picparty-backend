@@ -31,7 +31,7 @@ export class FileService {
     console.log(`Deleting file for id ${id}...`);
 
     // Construct the file path based on the provided pattern
-    const filePath = `./images/${id}`;
+    const filePath = `./images/${id}.jpg`;
 
     try {
       // Check if the file exists

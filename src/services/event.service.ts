@@ -39,7 +39,7 @@ export class EventService {
       // Save the user with the updated events array
       await user.save();
 
-      if (createdEvent.event_pic_file != "") {
+      if (createdEvent.event_pic_file) {
         const filePath = `./images/${createdEvent._id}.jpg`;
         await this.fileService.saveFileFromBuffer(createdEvent.event_pic_file, filePath);
       }
@@ -100,9 +100,9 @@ export class EventService {
       throw new NotFoundException('Event not found');
     }
     if ("event_pic_file" in updateEventDto) {
-      this.fileService.deleteFileById((event._id).toString())
+      await this.fileService.deleteFileById((event._id).toString())
       const filePath = `./images/${eventId}.jpg`;
-      await this.fileService.saveFileFromBuffer(event.event_pic_file, filePath);
+      await this.fileService.saveFileFromBuffer(updateEventDto.event_pic_file, filePath);
     }
     event.set(updateEventDto);
     return event.save();
