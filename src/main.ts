@@ -20,17 +20,17 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  await app.listen(80);
-
-  // Start HTTPS server
-  // const httpsOptions = {
-  //   key: fs.readFileSync('./path/to/key.pem'),
-  //   cert: fs.readFileSync('./path/to/cert.pem'),
-  //   secureOptions: require('constants').SSL_OP_NO_TLSv1 | require('constants').SSL_OP_NO_TLSv1_1,
-  // };
-  // const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
-  // await httpsServer.listen(3001);  // Choose a different port for HTTPS, e.g., 3001
+  if (process.env.NODE_ENV !== 'production') {
+    await app.listen(80);
+  } else {
+    // Start HTTPS server
+    const httpsOptions = {
+      key: fs.readFileSync('./client-key.pem'),
+      cert: fs.readFileSync('./client-cert.pem'),
+    };
+    const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
+    await httpsServer.listen(443);  // Choose a different port for HTTPS, e.g., 3001
+  } 
 }
 
 bootstrap();
