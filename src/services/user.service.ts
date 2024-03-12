@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { User } from '../entities/user.entity';
 import { FileService } from './file.service';
+import * as fsPromises from 'fs/promises';
 
 @Injectable()
 export class UserService {
@@ -38,9 +39,9 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    const filePath = `./images/${userId}.jpg`;
     if ("profile_pic_file" in updateUserDto) {
-      this.fileService.deleteFileById((user._id).toString())
-      const filePath = `./images/${userId}.jpg`;
+      await this.fileService.deleteFileById((user._id).toString())
       await this.fileService.saveFileFromBuffer(user.profile_pic_file, filePath);
     }
     user.set(updateUserDto);
@@ -53,7 +54,7 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
     if (user.profile_pic_file) {
-      this.fileService.deleteFileById((user._id).toString())
+      await this.fileService.deleteFileById((user._id).toString())
     }
   }
 }
