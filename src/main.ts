@@ -24,13 +24,13 @@ async function bootstrap() {
   await app.listen(3000);
 
   // Start HTTPS server
-  const httpsOptions = {
-    key: fs.readFileSync('./path/to/key.pem'),
-    cert: fs.readFileSync('./path/to/cert.pem'),
-    secureOptions: require('constants').SSL_OP_NO_TLSv1 | require('constants').SSL_OP_NO_TLSv1_1,
-  };
-  const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
-  await httpsServer.listen(3001);  // Choose a different port for HTTPS, e.g., 3001
+  // const httpsOptions = {
+  //   key: fs.readFileSync('./path/to/key.pem'),
+  //   cert: fs.readFileSync('./path/to/cert.pem'),
+  //   secureOptions: require('constants').SSL_OP_NO_TLSv1 | require('constants').SSL_OP_NO_TLSv1_1,
+  // };
+  // const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
+  // await httpsServer.listen(3001);  // Choose a different port for HTTPS, e.g., 3001
 }
 
 bootstrap();
