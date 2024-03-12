@@ -25,12 +25,14 @@ async function bootstrap() {
   } else {
     // Start HTTPS server
     const httpsOptions = {
-      key: fs.readFileSync('./client-key.pem'),
-      cert: fs.readFileSync('./client-cert.pem'),
+      key: fs.readFileSync('./key.pem'),
+      cert: fs.readFileSync('./cert.pem'),
     };
     const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
+    const document = SwaggerModule.createDocument(httpsServer, config);
+    SwaggerModule.setup('api', httpsServer, document);
     await httpsServer.listen(443);  // Choose a different port for HTTPS, e.g., 3001
-  } 
+  }
 }
 
 bootstrap();
