@@ -25,8 +25,8 @@ async function bootstrap() {
   } else {
     // Start HTTPS server
     const httpsOptions = {
-      key: fs.readFileSync('./key.pem'),
-      cert: fs.readFileSync('./cert.pem'),
+      key: fs.readFileSync('./backend-key.pem'),
+      cert: fs.readFileSync('./backend-cert.pem'),
     };
     const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
     httpsServer.use(cors())
