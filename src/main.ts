@@ -29,9 +29,11 @@ async function bootstrap() {
       cert: fs.readFileSync('./cert.pem'),
     };
     const httpsServer = await NestFactory.create(AppModule, { httpsOptions });
+    httpsServer.use(cors())
+    httpsServer.use(express.json({ limit: '10mb' })); 
     const document = SwaggerModule.createDocument(httpsServer, config);
     SwaggerModule.setup('api', httpsServer, document);
-    await httpsServer.listen(443);  // Choose a different port for HTTPS, e.g., 3001
+    await httpsServer.listen(80);  // Choose a different port for HTTPS, e.g., 3001
   }
 }
 
