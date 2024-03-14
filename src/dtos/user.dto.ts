@@ -12,7 +12,7 @@ export class CreateUserDto {
     readonly email: string;
   
     @ApiProperty({ example: 'password123', description: 'The password of the User' })
-    readonly password: string;
+    readonly password?: string;
 
     @ApiProperty({ 
         example: "base64",

@@ -9,7 +9,7 @@ import { Comment } from './comment.entity';
 export class User extends Document {
   @ApiProperty({ required: true })
   @Prop({ required: true })
-  name!: string;
+  name?: string;
 
   @ApiProperty({ required: true })
   @Prop({ required: true, unique: true })
@@ -17,7 +17,7 @@ export class User extends Document {
 
   @ApiProperty({ required: true })
   @Prop({ required: true })
-  password!: string;
+  password?: string;
 
   @ApiProperty({ required: false })
   @Prop({ required: false })
