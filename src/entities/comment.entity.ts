@@ -1,31 +1,28 @@
 // comment.entity.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { User } from './user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
 
-@Schema()
-export class Comment extends Document {
+@Entity()
+export class Comment {
 
-  @ApiProperty({ required: true }) // Use lazy loading for User
-  @Prop({ required: true })
-  user_id!: string;
-
-  @ApiProperty({ required: true }) // Use lazy loading for User
-  @Prop({ required: true })
-  event_id!: string;
+  @ApiProperty() // Use lazy loading for User
+  @Column()
+  userName: string;
 
   @ApiProperty()
-  @Prop()
-  pic_file: string;
+  @Column({
+    nullable: true
+  })
+  pic_file?: string;
 
   @ApiProperty()
-  @Prop()
+  @Column()
   comment: string;
 
   @ApiProperty()
-  @Prop()
-  like: boolean;
+  @PrimaryGeneratedColumn()
+  commentId: string;
 
 }
 

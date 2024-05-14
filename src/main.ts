@@ -21,7 +21,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   if (process.env.NODE_ENV !== 'production') {
-    await app.listen(80);
+    await app.listen(3010);
   } else {
     // Start HTTPS server
     const httpsOptions = {
